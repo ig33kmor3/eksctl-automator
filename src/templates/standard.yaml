@@ -1,4 +1,4 @@
-# deploy a standard eks cluster with two managed nodes and a vpc - https://eksctl.io/usage/schema/
+# deploy a standard eks cluster with two managed nodegroups and a vpc: 34 mins - https://eksctl.io/usage/schema/
 ---
 apiVersion: eksctl.io/v1alpha5
 kind: ClusterConfig
