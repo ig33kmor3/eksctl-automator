@@ -2,13 +2,13 @@
 
 Bootstrap a Generally Acceptable EKS Cluster (Kubernetes on AWS)
 
-## Prerequisites
+## REQUIREMENTS
 
 ```bash
-brew install aws-iam-authenticator
+brew install aws-cli && brew install aws-iam-authenticator
 ```
 
-## Deployment
+## DEPLOYMENT
 
 Create cluster with a template:
 
@@ -22,12 +22,22 @@ Delete cluster with a template:
 eksctl delete cluster -f templates/standard.yaml --profile "${PROFILE}"
 ```
 
-## Configuration
+## CONFIGURATION
+
+List available clusters:
 
 ```bash
 eksctl get clusters --profile "${PROFILE}"
 ```
 
+Chose cluster you'd like to get credentials for:
+
 ```bash
 aws eks update-kubeconfig --name "${CLUSTER_NAME} --profile "${PROFILE}""
 ```
+
+<!-- TODO: Install Autoscaller: -->
+
+<!-- TODO: Install AWS Load Balancer: -->
+
+<!-- TODO: Install Metrics: -->
