@@ -30,7 +30,7 @@ List available clusters:
 eksctl get clusters --profile "${PROFILE}"
 ```
 
-Chose cluster you'd like to get credentials for:
+Choose cluster you'd like to get credentials for:
 
 ```bash
 aws eks update-kubeconfig --name "${CLUSTER_NAME} --profile "${PROFILE}""
