@@ -5,7 +5,7 @@ kind: ClusterConfig
 
 # cluster configuration metadata
 metadata:
-  name: development
+  name: dev-apps
   region: us-west-2
   # version: "1.26"
 
@@ -19,8 +19,8 @@ vpc:
 addons:
 - name: vpc-cni
   version: latest
-  attachPolicyARNs:
-    - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
+  # attachPolicyARNs:
+  #   - arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy
 - name: coredns
   version: latest
 - name: kube-proxy
@@ -30,7 +30,7 @@ addons:
 
 # add general and intensive managed node groups
 managedNodeGroups:
-  - name: development-ng
+  - name: general
     instanceType: t3a.large
     minSize: 1
     maxSize: 1
@@ -40,10 +40,13 @@ managedNodeGroups:
     labels: {compute: dev}
     tags:
       nodegroup-compute: dev
-    iam:
-      attachPolicyARNs:
-      - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
-      - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+    # iam: # https://eksctl.io/usage/iam-policies/#supported-iam-add-on-policies
+    #   withAddonPolicies:
+    #     imageBuilder: true
+    #     awsLoadBalancerController: true
+    #   attachPolicyARNs:
+    #   - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+    #   - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
 
 # configure irsa for kubernetes cluster - service accounts 
 iam:
@@ -82,5 +85,11 @@ iam:
       autoScaler: true
   - metadata:
       name: build-service
+      namespace: ci-cd
     wellKnownPolicies:
       imageBuilder: true
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["audit", "authenticator"]
+    logRetentionInDays: 7
