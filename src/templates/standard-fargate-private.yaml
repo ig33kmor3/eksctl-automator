@@ -5,7 +5,7 @@ kind: ClusterConfig
 
 # cluster configuration metadata
 metadata:
-  name: dev-apps
+  name: prod-apps
   region: us-west-2
   # version: "1.26"
 
@@ -28,25 +28,16 @@ addons:
 - name: aws-ebs-csi-driver
   version: latest
 
-# add general and intensive managed node groups
-managedNodeGroups:
-  - name: general
-    instanceType: t3a.large
-    minSize: 1
-    maxSize: 1
-    desiredCapacity: 1
-    volumeSize: 100
-    privateNetworking: true
-    labels: {compute: dev}
-    tags:
-      nodegroup-compute: dev
-    # iam: # https://eksctl.io/usage/iam-policies/#supported-iam-add-on-policies
-    #   withAddonPolicies:
-    #     imageBuilder: true
-    #     awsLoadBalancerController: true
-    #   attachPolicyARNs:
-    #   - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
-    #   - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+# added fargate nodes
+fargateProfiles:
+  - name: standard
+    selectors:
+      # All workloads in the "default" Kubernetes namespace will be
+      # scheduled onto Fargate:
+      - namespace: default
+      # All workloads in the "kube-system" Kubernetes namespace will be
+      # scheduled onto Fargate:
+      - namespace: kube-system
 
 # configure irsa for kubernetes cluster - service accounts 
 iam:
@@ -88,8 +79,3 @@ iam:
       namespace: ci-cd
     wellKnownPolicies:
       imageBuilder: true
-
-cloudWatch:
-  clusterLogging:
-    enableTypes: ["audit", "authenticator"]
-    logRetentionInDays: 7

@@ -5,7 +5,7 @@ kind: ClusterConfig
 
 # cluster configuration metadata
 metadata:
-  name: prod-apps
+  name: dev-apps
   region: us-west-2
   # version: "1.26"
 
@@ -31,39 +31,23 @@ addons:
 # add general and intensive managed node groups
 managedNodeGroups:
   - name: general
-    instanceType: m5a.xlarge
-    minSize: 2
-    maxSize: 4
-    desiredCapacity: 2
-    volumeSize: 60
+    instanceType: t3a.large
+    minSize: 1
+    maxSize: 1
+    desiredCapacity: 1
+    volumeSize: 100
     privateNetworking: true
-    labels: {compute: general}
+    amiFamily: Bottlerocket
+    labels: {compute: dev}
     tags:
-      nodegroup-compute: general
-    iam: # https://eksctl.io/usage/iam-policies/#supported-iam-add-on-policies
-      withAddonPolicies:
-        imageBuilder: true
-        awsLoadBalancerController: true
-      # attachPolicyARNs:
-      # - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
-      # - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
-  - name: intensive
-    instanceType: c5a.4xlarge
-    minSize: 2
-    maxSize: 4
-    desiredCapacity: 2
-    volumeSize: 60
-    privateNetworking: true
-    labels: {compute: intensive}
-    tags:
-      nodegroup-compute: intensive
+      nodegroup-compute: dev
     # iam: # https://eksctl.io/usage/iam-policies/#supported-iam-add-on-policies
     #   withAddonPolicies:
     #     imageBuilder: true
     #     awsLoadBalancerController: true
-      # attachPolicyARNs:
-      # - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
-      # - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+    #   attachPolicyARNs:
+    #   - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
+    #   - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
 
 # configure irsa for kubernetes cluster - service accounts 
 iam:
@@ -105,3 +89,8 @@ iam:
       namespace: ci-cd
     wellKnownPolicies:
       imageBuilder: true
+
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["audit", "authenticator"]
+    logRetentionInDays: 7
