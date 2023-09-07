@@ -55,6 +55,7 @@ managedNodeGroups:
     desiredCapacity: 2
     volumeSize: 100
     privateNetworking: false
+    amiFamily: Bottlerocket
     labels: {compute: intensive}
     tags:
       nodegroup-compute: intensive
