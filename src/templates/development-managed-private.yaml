@@ -31,7 +31,7 @@ addons:
 # add general and intensive managed node groups
 managedNodeGroups:
   - name: general
-    instanceType: t3a.large
+    instanceType: t4g.large
     minSize: 1
     maxSize: 1
     desiredCapacity: 1

@@ -5,7 +5,7 @@ kind: ClusterConfig
 
 # cluster configuration metadata
 metadata:
-  name: prod-apps
+  name: demo-apps
   region: us-west-2
   # version: "1.26"
 
@@ -31,29 +31,29 @@ addons:
 # add general and intensive managed node groups
 managedNodeGroups:
   - name: general
-    instanceType: m5a.xlarge
+    instanceType: m6g.xlarge
     minSize: 2
     maxSize: 4
     desiredCapacity: 2
-    volumeSize: 60
+    volumeSize: 100
     privateNetworking: true
     amiFamily: Bottlerocket
     labels: {compute: general}
     tags:
       nodegroup-compute: general
-    iam: # https://eksctl.io/usage/iam-policies/#supported-iam-add-on-policies
-      withAddonPolicies:
-        imageBuilder: true
-        awsLoadBalancerController: true
+    # iam: # https://eksctl.io/usage/iam-policies/#supported-iam-add-on-policies
+    #   withAddonPolicies:
+    #     imageBuilder: true
+    #     awsLoadBalancerController: true
       # attachPolicyARNs:
       # - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
       # - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
   - name: intensive
-    instanceType: c5a.4xlarge
+    instanceType: c6g.4xlarge
     minSize: 2
     maxSize: 4
     desiredCapacity: 2
-    volumeSize: 60
+    volumeSize: 100
     privateNetworking: true
     labels: {compute: intensive}
     tags:
@@ -65,6 +65,12 @@ managedNodeGroups:
       # attachPolicyARNs:
       # - arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy
       # - arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly
+
+# configure logging
+cloudWatch:
+  clusterLogging:
+    enableTypes: ["audit", "authenticator"]
+    logRetentionInDays: 7
 
 # configure irsa for kubernetes cluster - service accounts 
 iam:
