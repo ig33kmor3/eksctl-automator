@@ -7,7 +7,7 @@ kind: ClusterConfig
 metadata:
   name: dev-apps
   region: us-west-2
-  # version: "1.26"
+  version: "1.27"
 
 # create vpc with cidr and gateway configuration
 vpc:
