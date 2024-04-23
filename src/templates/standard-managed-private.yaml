@@ -5,9 +5,9 @@ kind: ClusterConfig
 
 # cluster configuration metadata
 metadata:
-  name: geek-world-prod
+  name: masterclass-demo
   region: us-west-2
-  version: "1.27"
+  # version: "1.27"
 
 # create vpc with cidr and gateway configuration
 vpc:
@@ -70,8 +70,8 @@ managedNodeGroups:
 # configure logging
 cloudWatch:
   clusterLogging:
-    enableTypes: ["audit", "authenticator"]
-    logRetentionInDays: 7
+    enableTypes: ["audit", "authenticator", "api"]
+    logRetentionInDays: 30
 
 # configure irsa for kubernetes cluster - service accounts 
 iam:
